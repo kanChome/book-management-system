@@ -1,0 +1,367 @@
+openapi: 3.0.3
+info:
+  title: 書籍管理システムAPI
+  description: 書籍と著者の管理を行うRESTful API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/v1
+    description: ローカル開発環境
+paths:
+  /books:
+    post:
+      tags:
+        - Books
+      summary: 書籍を登録する
+      description: 新しい書籍を登録します。最低1人の著者を指定する必要があります。
+      operationId: createBook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBookRequest'
+      responses:
+        '201':
+          description: 書籍が正常に作成されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+        '400':
+          description: 不正なリクエスト
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /books/{bookId}:
+    put:
+      tags:
+        - Books
+      summary: 書籍情報を更新する
+      description: 既存の書籍情報を更新します。出版済みから未出版への変更は不可能です。
+      operationId: updateBook
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          description: 書籍ID
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBookRequest'
+      responses:
+        '200':
+          description: 書籍が正常に更新されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+        '400':
+          description: 不正なリクエスト（出版済み→未出版への変更など）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 書籍が見つかりません
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /authors:
+    post:
+      tags:
+        - Authors
+      summary: 著者を登録する
+      description: 新しい著者を登録します
+      operationId: createAuthor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAuthorRequest'
+      responses:
+        '201':
+          description: 著者が正常に作成されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResponse'
+        '400':
+          description: 不正なリクエスト（未来の生年月日など）
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /authors/{authorId}:
+    put:
+      tags:
+        - Authors
+      summary: 著者情報を更新する
+      description: 既存の著者情報を更新します
+      operationId: updateAuthor
+      parameters:
+        - name: authorId
+          in: path
+          required: true
+          description: 著者ID
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAuthorRequest'
+      responses:
+        '200':
+          description: 著者が正常に更新されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResponse'
+        '400':
+          description: 不正なリクエスト
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: 著者が見つかりません
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /authors/{authorId}/books:
+    get:
+      tags:
+        - Authors
+      summary: 著者に紐づく書籍を取得する
+      description: 指定された著者が執筆したすべての書籍を取得します
+      operationId: getBooksByAuthor
+      parameters:
+        - name: authorId
+          in: path
+          required: true
+          description: 著者ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 書籍リストを正常に取得しました
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookResponse'
+        '404':
+          description: 著者が見つかりません
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    CreateBookRequest:
+      type: object
+      required:
+        - title
+        - price
+        - publishStatus
+        - authorIds
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: 書籍タイトル
+          example: "ドメイン駆動設計"
+        price:
+          type: number
+          format: decimal
+          minimum: 0
+          description: 価格（円）
+          example: 3500
+        publishStatus:
+          $ref: '#/components/schemas/PublishStatus'
+        authorIds:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            format: uuid
+          description: 著者IDのリスト
+
+    UpdateBookRequest:
+      type: object
+      required:
+        - title
+        - price
+        - publishStatus
+        - authorIds
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: 書籍タイトル
+        price:
+          type: number
+          format: decimal
+          minimum: 0
+          description: 価格（円）
+        publishStatus:
+          $ref: '#/components/schemas/PublishStatus'
+        authorIds:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            format: uuid
+          description: 著者IDのリスト
+
+    BookResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: 書籍ID
+        title:
+          type: string
+          description: 書籍タイトル
+        price:
+          type: number
+          format: decimal
+          description: 価格（円）
+        publishStatus:
+          $ref: '#/components/schemas/PublishStatus'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthorSummary'
+        createdAt:
+          type: string
+          format: date-time
+          description: 作成日時
+        updatedAt:
+          type: string
+          format: date-time
+          description: 更新日時
+
+    CreateAuthorRequest:
+      type: object
+      required:
+        - name
+        - birthDate
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: 著者名
+          example: "エリック・エヴァンス"
+        birthDate:
+          type: string
+          format: date
+          description: 生年月日（過去の日付のみ）
+          example: "1970-01-01"
+
+    UpdateAuthorRequest:
+      type: object
+      required:
+        - name
+        - birthDate
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: 著者名
+        birthDate:
+          type: string
+          format: date
+          description: 生年月日（過去の日付のみ）
+
+    AuthorResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: 著者ID
+        name:
+          type: string
+          description: 著者名
+        birthDate:
+          type: string
+          format: date
+          description: 生年月日
+        createdAt:
+          type: string
+          format: date-time
+          description: 作成日時
+        updatedAt:
+          type: string
+          format: date-time
+          description: 更新日時
+
+    AuthorSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: 著者ID
+        name:
+          type: string
+          description: 著者名
+
+    PublishStatus:
+      type: string
+      enum:
+        - UNPUBLISHED
+        - PUBLISHED
+      description: 出版状況
+
+    ErrorResponse:
+      type: object
+      required:
+        - type
+        - title
+        - status
+      properties:
+        type:
+          type: string
+          description: エラータイプのURI
+          example: "/errors/validation-error"
+        title:
+          type: string
+          description: エラータイトル
+          example: "Validation Error"
+        status:
+          type: integer
+          description: HTTPステータスコード
+          example: 400
+        detail:
+          type: string
+          description: エラーの詳細説明
+          example: "価格は0以上でなければなりません"
+        instance:
+          type: string
+          description: エラーが発生したリソースのURI
+          example: "/api/v1/books"

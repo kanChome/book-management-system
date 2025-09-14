@@ -1,0 +1,22 @@
+# 技術要件
+
+- 言語:
+  - kotlin (Java21)
+- フレームワーク:
+  - SpringBoot@4.x
+  - JOOQ
+- ビルドツール:
+  - Gradle (Groovy)
+- ライブラリ:
+  - JOOQ Access Layer,
+  - Flyway Migration,
+  - PostgreSQL Driver,
+  - Docker Compose Support
+- アーキテクチャ:
+  - クリーンアーキテクチャ
+  - 詳細は下記GitHub Repositoryを参考にすること
+    - https://github.com/thombergs/buckpal
+- 開発手法:
+  - t-wadaさんの手法を参考にTDDで開発を進めること
+- 環境構築:
+  - Docker, Docker composeを用いてコンテナ化すること
