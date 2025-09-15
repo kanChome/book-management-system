@@ -54,10 +54,6 @@ potential-bugs:
     active: false
   ExplicitGarbageCollectionCall:
     active: false
-  MissingWhenCase:
-    active: false
-  RedundantElseInWhen:
-    active: false
 
 coroutines:
   active: true
@@ -71,8 +67,6 @@ coroutines:
   SuspendFunWithFlowReturnType:
     active: true
   GlobalCoroutineUsage:
-    active: true
-  SuspendFunInFinallySection:
     active: true
   SuspendFunSwallowedCancellation:
     active: true
