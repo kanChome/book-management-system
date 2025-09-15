@@ -1,38 +1,94 @@
-@ECHO OFF
-SETLOCAL
+@rem
+@rem Copyright 2015 the original author or authors.
+@rem
+@rem Licensed under the Apache License, Version 2.0 (the "License");
+@rem you may not use this file except in compliance with the License.
+@rem You may obtain a copy of the License at
+@rem
+@rem      https://www.apache.org/licenses/LICENSE-2.0
+@rem
+@rem Unless required by applicable law or agreed to in writing, software
+@rem distributed under the License is distributed on an "AS IS" BASIS,
+@rem WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+@rem See the License for the specific language governing permissions and
+@rem limitations under the License.
+@rem
+@rem SPDX-License-Identifier: Apache-2.0
+@rem
 
-set DIR=%~dp0
-set WRAPPER_DIR=%DIR%gradle\wrapper
-set WRAPPER_JAR=%WRAPPER_DIR%\gradle-wrapper.jar
-set WRAPPER_VERSION=8.14.3
+@if "%DEBUG%"=="" @echo off
+@rem ##########################################################################
+@rem
+@rem  Gradle startup script for Windows
+@rem
+@rem ##########################################################################
 
-IF NOT EXIST "%WRAPPER_JAR%" (
-  ECHO gradle-wrapper.jar が見つかりません。ダウンロードを試みます (%WRAPPER_VERSION%)...
-  mkdir "%WRAPPER_DIR%" 2>NUL
-  where powershell >NUL 2>&1
-  IF %ERRORLEVEL% EQU 0 (
-    powershell -NoProfile -Command "\
-      $u1='https://repo.gradle.org/gradle/libs-releases-local/org/gradle/gradle-wrapper/'+$env:WRAPPER_VERSION+'/gradle-wrapper-'+$env:WRAPPER_VERSION+'.jar'; \
-      $u2='https://repo1.maven.org/maven2/org/gradle/gradle-wrapper/'+$env:WRAPPER_VERSION+'/gradle-wrapper-'+$env:WRAPPER_VERSION+'.jar'; \
-      $o=$env:WRAPPER_JAR; \
-      try { Invoke-WebRequest -UseBasicParsing -Uri $u1 -OutFile $o } catch { try { Invoke-WebRequest -UseBasicParsing -Uri $u2 -OutFile $o } catch { exit 1 } }" || (
-      ECHO gradle-wrapper.jar の取得に失敗しました & EXIT /B 1
-    )
-  ) ELSE (
-    ECHO PowerShell が見つかりません。手動で入手してください。 & EXIT /B 1
-  )
-)
+@rem Set local scope for the variables with windows NT shell
+if "%OS%"=="Windows_NT" setlocal
 
-set JAVA_EXE=%JAVA_HOME%\bin\java.exe
-IF NOT EXIST "%JAVA_EXE%" (
-  for %%i in (java.exe) do set JAVA_EXE=%%~$PATH:i
-)
-IF NOT EXIST "%JAVA_EXE%" (
-  ECHO Java が見つかりません。JAVA_HOME を設定するか Java をインストールしてください。
-  EXIT /B 1
-)
+set DIRNAME=%~dp0
+if "%DIRNAME%"=="" set DIRNAME=.
+@rem This is normally unused
+set APP_BASE_NAME=%~n0
+set APP_HOME=%DIRNAME%
 
-"%JAVA_EXE%" -Dorg.gradle.appname=gradlew -classpath "%WRAPPER_JAR%" org.gradle.wrapper.GradleWrapperMain %*
+@rem Resolve any "." and ".." in APP_HOME to make it shorter.
+for %%i in ("%APP_HOME%") do set APP_HOME=%%~fi
 
-ENDLOCAL
+@rem Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
+set DEFAULT_JVM_OPTS="-Xmx64m" "-Xms64m"
 
+@rem Find java.exe
+if defined JAVA_HOME goto findJavaFromJavaHome
+
+set JAVA_EXE=java.exe
+%JAVA_EXE% -version >NUL 2>&1
+if %ERRORLEVEL% equ 0 goto execute
+
+echo. 1>&2
+echo ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH. 1>&2
+echo. 1>&2
+echo Please set the JAVA_HOME variable in your environment to match the 1>&2
+echo location of your Java installation. 1>&2
+
+goto fail
+
+:findJavaFromJavaHome
+set JAVA_HOME=%JAVA_HOME:"=%
+set JAVA_EXE=%JAVA_HOME%/bin/java.exe
+
+if exist "%JAVA_EXE%" goto execute
+
+echo. 1>&2
+echo ERROR: JAVA_HOME is set to an invalid directory: %JAVA_HOME% 1>&2
+echo. 1>&2
+echo Please set the JAVA_HOME variable in your environment to match the 1>&2
+echo location of your Java installation. 1>&2
+
+goto fail
+
+:execute
+@rem Setup the command line
+
+set CLASSPATH=
+
+
+@rem Execute Gradle
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %GRADLE_OPTS% "-Dorg.gradle.appname=%APP_BASE_NAME%" -classpath "%CLASSPATH%" -jar "%APP_HOME%\gradle\wrapper\gradle-wrapper.jar" %*
+
+:end
+@rem End local scope for the variables with windows NT shell
+if %ERRORLEVEL% equ 0 goto mainEnd
+
+:fail
+rem Set variable GRADLE_EXIT_CONSOLE if you need the _script_ return code instead of
+rem the _cmd.exe /c_ return code!
+set EXIT_CODE=%ERRORLEVEL%
+if %EXIT_CODE% equ 0 set EXIT_CODE=1
+if not ""=="%GRADLE_EXIT_CONSOLE%" exit %EXIT_CODE%
+exit /b %EXIT_CODE%
+
+:mainEnd
+if "%OS%"=="Windows_NT" endlocal
+
+:omega
