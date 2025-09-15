@@ -9,7 +9,7 @@ plugins {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
@@ -18,7 +18,7 @@ version = "0.0.1-SNAPSHOT"
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "21"
         freeCompilerArgs = freeCompilerArgs + listOf("-Xjsr305=strict")
     }
 }
