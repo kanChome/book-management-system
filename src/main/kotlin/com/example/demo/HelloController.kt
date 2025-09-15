@@ -16,8 +16,8 @@ class HelloController(
                 try {
                     // 単純な接続確認（例: SELECT 1）
                     dsl.fetch("select 1 as ok").isNotEmpty
-                } catch (ex: Exception) {
-                    false
+                } catch (ex: DataAccessException) {
+                    println(ex)
                 },
         )
 }
