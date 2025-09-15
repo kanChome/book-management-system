@@ -62,10 +62,49 @@ docker-compose up -d postgres
 - 生年月日は過去の日付のみ
 - 同姓同名の著者は許可
 
+## コミットメッセージ規約
+[Conventional Commits](https://www.conventionalcommits.org/)に従います。
+
+### 形式
+```
+<type>(<scope>): <description>
+
+<optional body>
+
+<optional footer>
+```
+
+### タイプ
+- **feat**: 新機能追加
+- **fix**: バグ修正
+- **docs**: ドキュメントのみの変更
+- **style**: コードスタイルの変更（機能に影響なし）
+- **refactor**: バグ修正や機能追加を伴わないコード変更
+- **perf**: パフォーマンス改善
+- **test**: テストの追加・修正
+- **build**: ビルドシステムや依存関係の変更
+- **ci**: CI/CD設定の変更
+- **chore**: その他の変更
+
+### 例
+```
+feat(auth): add JWT authentication
+
+Implements JWT-based authentication for API endpoints
+using Spring Security.
+
+Closes #123
+```
+
+### 破壊的変更
+- タイプ/スコープの後に`!`を付ける: `feat(api)!: remove deprecated endpoints`
+- フッターに`BREAKING CHANGE:`を記載
+
 ## 最近の変更
 1. **2025-01-14**: 初期実装計画とデータモデル定義
 2. **2025-01-14**: OpenAPI仕様とクイックスタートガイド作成
 3. **2025-01-14**: フェーズ0,1の設計ドキュメント完成
+4. **2025-01-15**: Conventional Commitsガイドライン追加
 
 ## 次のステップ
 - /tasksコマンドでタスクリスト生成
