@@ -5,7 +5,7 @@
 
 ## 技術スタック
 - **言語**: Kotlin (Java 21)
-- **フレームワーク**: SpringBoot 4.x
+- **フレームワーク**: SpringBoot 3.5.5
 - **DB**: PostgreSQL 16 + JOOQ
 - **マイグレーション**: Flyway
 - **テスト**: JUnit 5, MockK, TestContainers

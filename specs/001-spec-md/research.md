@@ -5,7 +5,7 @@
 
 ## 技術スタックの決定事項
 
-### 1. SpringBoot 4.xとJOOQの統合
+### 1. SpringBoot 3.5.5とJOOQの統合
 
 **決定**: SpringBoot Starter JOOQを使用した統合
 **根拠**:
@@ -20,7 +20,7 @@
 **実装方法**:
 ```gradle
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-jooq:3.2.0'
+    implementation 'org.springframework.boot:spring-boot-starter-jooq:3.5.5'
     implementation 'org.jooq:jooq:3.19.0'
     jooqGenerator 'org.postgresql:postgresql:42.7.0'
 }

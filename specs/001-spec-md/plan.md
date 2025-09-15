@@ -29,11 +29,11 @@
 - フェーズ3-4: 実装実行（手動またはツール経由）
 
 ## 概要
-書籍管理システムのバックエンドAPIを構築します。書籍と著者の情報をRDBに登録・更新し、著者に紐づく書籍を取得できる機能を実装します。SpringBoot 4.x、JOOQ、クリーンアーキテクチャを使用し、TDD手法で開発を進めます。
+書籍管理システムのバックエンドAPIを構築します。書籍と著者の情報をRDBに登録・更新し、著者に紐づく書籍を取得できる機能を実装します。SpringBoot 3.5.5、JOOQ、クリーンアーキテクチャを使用し、TDD手法で開発を進めます。
 
 ## 技術コンテキスト
 **言語/バージョン**: Kotlin (Java 21)
-**主要依存関係**: SpringBoot 4.x、JOOQ、Flyway Migration
+**主要依存関係**: SpringBoot 3.5.5、JOOQ、Flyway Migration
 **ストレージ**: PostgreSQL
 **テスト**: JUnit 5、MockK、TestContainers
 **ターゲットプラットフォーム**: Dockerコンテナ（Linux）
@@ -135,15 +135,15 @@ settings.gradle                  # Gradleプロジェクト設定
 
 ## フェーズ0: アウトラインとリサーチ
 1. **技術コンテキストから未知の事項を抽出**:
-   - SpringBoot 4.xとJOOQの統合ベストプラクティス
+   - SpringBoot 3.5.5とJOOQの統合ベストプラクティス
    - クリーンアーキテクチャ（buckpalパターン）の実装
    - TestContainersを使用したTDD実践
    - FlywayとJOOQの連携
 
 2. **Context7 MCPを使用した技術リサーチ**:
    ```
-   1. Context7 MCPでSpringBoot 4.x最新ドキュメント取得
-      → SpringBoot最新バージョンと機能の確認
+   1. Context7 MCPでSpringBoot 3.5.5最新ドキュメント取得
+      → SpringBoot 3.5.5の機能と仕様の確認
       → JOOQとの統合パターン調査
 
    2. Context7 MCPでJOOQベストプラクティス取得
