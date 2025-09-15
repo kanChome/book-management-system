@@ -90,7 +90,8 @@ jooq {
 // Make JOOQ generation depend on Flyway migration
 tasks.named("generateJooq").configure {
     dependsOn("flywayMigrate")
-    inputs.files(fileTree("src/main/resources/db/migration"))
+    inputs
+        .files(fileTree("src/main/resources/db/migration"))
         .withPropertyName("migrations")
         .withPathSensitivity(PathSensitivity.RELATIVE)
     outputs.cacheIf { true }
