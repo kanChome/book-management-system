@@ -34,3 +34,13 @@ Given the implementation details provided as an argument, do this:
 6. Report results with branch name, file paths, and generated artifacts.
 
 Use absolute paths with the repository root for all file operations to avoid path issues.
+
+# Claude Settings
+
+## Language Settings
+- **All responses shall be in Japanese**
+- **All documentation, comments, specifications, etc., shall be written in Japanese**
+- **Comments within the code shall also be written in Japanese**
+
+## Project Settings
+For this project, all communication and documentation shall be unified in Japanese.

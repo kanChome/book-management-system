@@ -56,3 +56,13 @@ Given the context provided as an argument, do this:
 Context for task generation: $ARGUMENTS
 
 The tasks.md should be immediately executable - each task must be specific enough that an LLM can complete it without additional context.
+
+# Claude Settings
+
+## Language Settings
+- **All responses shall be in Japanese**
+- **All documentation, comments, specifications, etc., shall be written in Japanese**
+- **Comments within the code shall also be written in Japanese**
+
+## Project Settings
+For this project, all communication and documentation shall be unified in Japanese.
