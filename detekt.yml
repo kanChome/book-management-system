@@ -1,0 +1,86 @@
+build:
+  maxIssues: 10
+  excludeCorrectable: false
+
+config:
+  validation: true
+  warningsAsErrors: false
+  checkExhaustiveness: false
+
+exceptions:
+  active: true
+  TooGenericExceptionCaught:
+    active: true
+    excludes: ['**/test/**']
+  TooGenericExceptionThrown:
+    active: true
+    excludes: ['**/test/**']
+  ThrowingExceptionsWithoutMessageOrCause:
+    active: true
+    excludes: ['**/test/**']
+  PrintStackTrace:
+    active: true
+  RethrowCaughtException:
+    active: true
+  ReturnFromFinally:
+    active: true
+
+potential-bugs:
+  active: true
+  UnsafeCallOnNullableType:
+    active: true
+    excludes: ['**/test/**']
+  UnreachableCode:
+    active: true
+  EqualsWithHashCodeExist:
+    active: true
+  IgnoredReturnValue:
+    active: true
+  MapGetWithNotNullAssertionOperator:
+    active: true
+  ImplicitDefaultLocale:
+    active: true
+  CastNullableToNonNullableType:
+    active: true
+  CastToNullableType:
+    active: true
+  NullCheckOnMutableProperty:
+    active: true
+  UnnecessaryNotNullOperator:
+    active: false
+  UnnecessarySafeCall:
+    active: false
+  DoubleMutabilityForCollection:
+    active: false
+  ExplicitGarbageCollectionCall:
+    active: false
+
+coroutines:
+  active: true
+  RedundantSuspendModifier:
+    active: true
+  SleepInsteadOfDelay:
+    active: true
+  InjectDispatcher:
+    active: true
+    dispatcherNames: ['IO','Default','Unconfined']
+  SuspendFunWithFlowReturnType:
+    active: true
+  GlobalCoroutineUsage:
+    active: true
+  SuspendFunSwallowedCancellation:
+    active: true
+
+# スタイル系は全て無効化（ktlintが担当）
+naming:
+  active: false
+style:
+  active: false
+complexity:
+  active: false
+performance:
+  active: false
+comments:
+  active: false
+empty-blocks:
+  active: false

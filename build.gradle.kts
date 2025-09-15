@@ -1,10 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.9.25"
+    kotlin("jvm") version "2.0.21"
     id("org.springframework.boot") version "3.5.5"
     id("io.spring.dependency-management") version "1.1.6"
-    kotlin("plugin.spring") version "1.9.25"
+    kotlin("plugin.spring") version "2.0.21"
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.2"
+    id("io.gitlab.arturbosch.detekt") version "1.23.8"
     id("nu.studer.jooq") version "9.0"
     id("org.flywaydb.flyway") version "10.21.0"
 }
@@ -88,7 +90,8 @@ jooq {
 // Make JOOQ generation depend on Flyway migration
 tasks.named("generateJooq").configure {
     dependsOn("flywayMigrate")
-    inputs.files(fileTree("src/main/resources/db/migration"))
+    inputs
+        .files(fileTree("src/main/resources/db/migration"))
         .withPropertyName("migrations")
         .withPathSensitivity(PathSensitivity.RELATIVE)
     outputs.cacheIf { true }
@@ -105,3 +108,41 @@ flyway {
     validateMigrationNaming = true
 }
 
+// ktlint configuration
+ktlint {
+    version.set("1.5.0")
+    android.set(false)
+    outputToConsole.set(true)
+    outputColorName.set("RED")
+    reporters {
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+    }
+    filter {
+        exclude("**/generated/**")
+        exclude("**/build/**")
+    }
+}
+
+// detekt configuration
+detekt {
+    buildUponDefaultConfig = true
+    config.setFrom("$projectDir/detekt.yml")
+    source.setFrom("src/main/kotlin", "src/test/kotlin")
+    reports {
+        html.required.set(true)
+        xml.required.set(false)
+        txt.required.set(false)
+        sarif.required.set(false)
+    }
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    jvmTarget = "21"
+    reports {
+        html.required.set(true)
+        xml.required.set(false)
+        txt.required.set(false)
+    }
+    exclude("**/build/**", "**/generated/**")
+}
