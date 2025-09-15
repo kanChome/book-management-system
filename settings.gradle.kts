@@ -13,4 +13,3 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "vk-springboot-jooq-kotlin"
-
